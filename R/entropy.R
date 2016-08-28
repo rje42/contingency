@@ -1,0 +1,130 @@
+##' Calculate entropy of discrete distribution
+##' 
+##' @param p non-negative numeric vector
+##' @export entropy
+entropy <- function(p, ...) {
+  UseMethod("entropy")
+}
+
+##' @describeIn entropy Default method for vectors
+##' @export entropy.default
+entropy.default <- function(p) {
+  q <- p[p>0]
+  -sum(q*log(q))/sum(q)
+}
+
+##' @describeIn entropy Method for arrays
+##' @export entropy.array
+entropy.array <- function(p, margin) {
+  if (!missing(margin)) p <- marginTable(p, margin)
+  q <- p[p > 0]
+  -sum(q*log(q))/sum(q)
+}
+
+##' @describeIn entropy Method for \code{tables} object
+##' @export entropy.tables
+entropy.tables <- function(p, margin) {
+  if (!missing(margin)) p <- margin.tables(p, margin)
+  tmp <- p*log(p)
+  tmp[is.nan(tmp)] <- 0
+  -rowSums(tmp)/rowSums(p)
+}
+
+##' (Conditional) mutual information
+##' 
+##' @param p numeric array or \code{tables} class
+##' @param m1,m2 margins for mutual information
+##' @param condition conditional margin
+##' @export mutualInf
+mutualInf <- function(p, m1, m2, condition, ...) {
+  UseMethod("mutualInf")
+}
+
+##' @describeIn mutualInf Default method for vectors
+##' @export mutualInf.default
+mutualInf.default <- function(p, m1, m2, condition) {
+  if (missing(condition)) condition <- integer(0)
+  if (length(intersect(m1,m2)) > 0 || length(intersect(c(m1,m2),condition))) stop("Variable sets must be disjoint")
+  else tmp <- margin(p, c(m1, m2, condition))/sum(p)
+  
+  d1 <- prod(dim(tmp)[seq_along(m1)])
+  d2 <- prod(dim(tmp)[seq_along(m2)+length(m1)])
+  d3 <- prod(dim(tmp))/(d1*d2)
+  dim(tmp) <- c(d1,d2,d3)
+
+  p13 <- conditionTable2(tmp, c(1,3), c())
+  p23 <- conditionTable2(tmp, c(2,3), c())
+  p3 <- conditionTable2(tmp, c(3), c())
+
+  out <- tmp*(log(tmp) - log(p13) - log(p23) + log(p3))
+  return(sum(out[tmp > 0]))
+}
+
+##' @describeIn mutualInf Method for \code{tables} object
+##' @export mutualInf.tables
+mutualInf.tables <- function(p, m1, m2, condition) {
+  if (missing(condition)) condition <- integer(0)
+  if (length(intersect(m1,m2)) > 0 || length(intersect(c(m1,m2),condition))) stop("Variable sets must be disjoint")
+  else tmp <- margin(p, c(m1, m2, condition))
+  tmp <- tmp/rowSums(tmp)
+  
+  ds <- tdim(tmp)
+  d1 <- prod(ds[seq_along(m1)])
+  d2 <- prod(ds[seq_along(m2)+length(m1)])
+  d3 <- prod(ds)/(d1*d2)
+  tdim(tmp) <- c(d1,d2,d3)
+  
+  p13 <- conditional2(tmp, c(1,3), c())
+  p23 <- conditional2(tmp, c(2,3), c())
+  p3 <- conditional2(tmp, c(3), c())
+  
+  out <- tmp*(log(tmp) - log(p13) - log(p23) + log(p3))
+  out[is.nan(out)] = 0
+  return(rowSums(out))
+}
+
+##' Interaction information
+##' 
+##' @export interactionInf
+interactionInf <- function(p, ...) UseMethod("interactionInf")
+
+##' @describeIn interactionInf Default method for vectors
+##' @export interactionInf.default
+interactionInf.default <- function(p, ..., condition) {
+  dots <- list(...)
+  if (missing(condition)) condition=integer(0)
+  if (length(dots) == 1) {
+    return(-entropy(p, c(dots[[1]], condition)) + entropy(p, condition))
+  }
+  else {
+    args1 <- c(list(p=p), dots[-1], list(condition=condition))
+    args2 <- c(list(p=p), dots[-1], list(condition=c(dots[[1]], condition)))
+    return(do.call(Recall, args2) - do.call(Recall, args1))
+  }
+}
+
+##' Kullback-Leibler Divergence
+##' 
+##' Get the KL Divergence between two discrete distributions
+##' 
+##' @param x,y vectors (of probabilities)
+##' 
+##' @export kl
+kl <- function(x, y, ...) {
+  UseMethod("kl")
+}
+
+##' @describeIn kl Default method for vectors
+##' @export kl.default
+kl.default <- function(x, y) {
+  sum(x[y > 0]*log(x[y > 0]/y[y > 0]))
+}
+
+##' @describeIn kl Method for \code{tables} object
+##' @export kl.tables
+kl.tables <- function(x, y) {
+  tmp <- x*log(x/y)
+  tmp[is.nan(tmp)] = 0
+  rowSums(tmp)
+}
+
