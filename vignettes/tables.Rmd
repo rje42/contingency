@@ -31,12 +31,61 @@ However we can also specific elements of the tables using their co-ordinates, an
 ```{r}
 tab[,1,1,]
 ```
+The `drop` argument can be set to `FALSE` if dimensions
+of length 1 should be retained:
+```{r}
+tab[,1,1,,drop=FALSE]
+```
+
+## Basic Manipulations
+
 Some basic operations are predefined, such as taking the margin of each table, or 
 calculating a conditional distribution.
 ```{r}
 margin(tab, 2:3)         # margin of second and third dimensions
 conditional(tab, 2, 1)  # second dimension conditional on first
 ```
+These can also be applied on an ordinary numerical array 
+with the expected effect.
+It can also be useful to calcuate conditional or 
+other functions but retain the placement of values 
+in the same point as the original table.  For this 
+purpose the functions `margin2()` and `conditional2()` are
+available.
+```{r}
+                         # as above but sequence of cells
+margin2(tab, 2:3)        # in table is retained
+conditional2(tab, 2, 1)  
+```
 
-## More...
+## Functions of Distributions
+
+Some built-in functions are available.  For example:
+```{r}
+tab2 <- rprobMat(10,2,3)
+kl(tab, tab2)   # pairwise Kullback-Leibler divergence
+                       # mutual information between
+mutualInf(tab, 2, 3)   # second and third dimensions
+mutualInf(tab, 2, 3, cond=1)   # conditional mutual information
+```
+
+## Graphical Models
+
+Using the `MixedGraphs` package, one can generate 
+distributions satisfying the Markov properties of
+a directed acyclic graph.  For example:
+```{r}
+require(MixedGraphs)
+dag1 <- graphCr("1 -> 3 <- 2")
+tab3 <- rDAGmodel(dag1, 10)
+```
+Now the graph implies that the first
+and second margins are independent.  We can use 
+`checkCI()` to confirm this.  By default it uses
+machine precision.
+```{r}
+checkCI(tab3, 1, 2)  # should be TRUE
+checkCI(tab3, 1, 3)  # FALSE with very high prob.
+```
+
 

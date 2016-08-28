@@ -270,3 +270,20 @@ aperm.tables <- function(a, perm) {
   class(out) <- "tables"
   out
 }
+
+##' As tables
+##' 
+as.tables <- function(x, ...) {
+  UseMethod("as.tables")
+}
+
+as.tables.array <- function(x) {
+  class(x) = "tables"
+  tdim(x) = dim(x)
+  dim(x) = c(1, prod(tdim(x)))
+  x
+}
+
+# as.tables.default <- 
+# as.tables.matrix <-
+# as.tables.data.frame <-

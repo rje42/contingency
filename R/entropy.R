@@ -123,6 +123,20 @@ kl.default <- function(x, y) {
 ##' @describeIn kl Method for \code{tables} object
 ##' @export kl.tables
 kl.tables <- function(x, y) {
+  
+  if (!("tables" %in% class(y))) y <- as.tables(y) 
+
+  nx = ntables(x)
+  ny = ntables(y)
+  if (nx < ny) {
+    if (ny %% nx != 0) warning("longer object length is not a multiple of shorter object length")
+    x = x[rep.int(seq_len(nx), ny),,drop=FALSE]
+  }
+  else if (nx > ny) {
+    if (nx %% ny != 0) warning("longer object length is not a multiple of shorter object length")
+    y = y[rep.int(seq_len(ny), nx),,drop=FALSE]
+  }
+  
   tmp <- x*log(x/y)
   tmp[is.nan(tmp)] = 0
   rowSums(tmp)
