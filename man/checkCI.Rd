@@ -2,9 +2,15 @@
 % Please edit documentation in R/condinep.R
 \name{checkCI}
 \alias{checkCI}
+\alias{checkCI.array}
+\alias{checkCI.tables}
 \title{Check conditional independence}
 \usage{
 checkCI(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
+
+\method{checkCI}{array}(x, A, B, C = integer(0), eps = .Machine$double.eps)
+
+\method{checkCI}{tables}(x, A, B, C = integer(0), eps = .Machine$double.eps)
 }
 \arguments{
 \item{x}{an array or object of class \code{tables}}
@@ -23,4 +29,10 @@ If \code{A} and \code{B} overlap with \code{C} then these vertices are ignored. 
 and \code{B} intersect with one another (but not \code{C}) then the solution is always
 false.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{array}: method for \code{array} object
+
+\item \code{tables}: method for \code{tables} object
+}}
 

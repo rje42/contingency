@@ -17,6 +17,8 @@ checkCI <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
   UseMethod("checkCI")
 }
 
+#' @describeIn checkCI method for \code{array} object
+#' @export checkCI.array
 checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps) {
   A <- setdiff(A,C)
   B <- setdiff(B,C)
@@ -35,6 +37,8 @@ checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps) {
   return(TRUE)
 }
 
+#' @describeIn checkCI method for \code{tables} object
+#' @export checkCI.tables
 checkCI.tables <- function(x, A, B, C=integer(0), eps=.Machine$double.eps) {
   n <- ntables(x)
   A <- setdiff(A,C)
