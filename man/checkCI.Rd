@@ -8,9 +8,9 @@
 \usage{
 checkCI(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
 
-\method{checkCI}{array}(x, A, B, C = integer(0), eps = .Machine$double.eps)
+\method{checkCI}{array}(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
 
-\method{checkCI}{tables}(x, A, B, C = integer(0), eps = .Machine$double.eps)
+\method{checkCI}{tables}(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
 }
 \arguments{
 \item{x}{an array or object of class \code{tables}}
@@ -18,6 +18,10 @@ checkCI(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
 \item{A, B}{the sets of variables whose independence is to be tested}
 
 \item{C}{conditioning set (possibly empty)}
+
+\item{eps}{tolerance parameter}
+
+\item{...}{other arguments to methods}
 }
 \description{
 Gives a numerical check that a (conditional) independence holds in a probability distribution.

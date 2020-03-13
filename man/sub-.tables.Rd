@@ -32,4 +32,3 @@ have the same effect for 2x2x2 tables.
 If only one index is specified, then the function behaves just as ordinary subsetting
 on an array.
 }
-

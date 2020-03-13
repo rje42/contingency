@@ -8,12 +8,14 @@
 \usage{
 kl(x, y, ...)
 
-\method{kl}{default}(x, y)
+\method{kl}{default}(x, y, ...)
 
-\method{kl}{tables}(x, y)
+\method{kl}{tables}(x, y, ...)
 }
 \arguments{
 \item{x, y}{vectors (of probabilities)}
+
+\item{...}{other arguments to methods}
 }
 \description{
 Get the KL Divergence between two discrete distributions

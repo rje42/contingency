@@ -14,6 +14,5 @@ capply(x, f, ...)
 \item{...}{additional arguments to \code{f}}
 }
 \description{
-Apply function over tables
+Apply a function to each contingency table in a \code{tables} object.
 }
-

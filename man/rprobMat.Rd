@@ -2,9 +2,12 @@
 % Please edit documentation in R/probMat.R
 \name{rprobMat}
 \alias{rprobMat}
+\alias{rcondProbMat}
 \title{Generate matrix of (conditional) probability distributions}
 \usage{
 rprobMat(n, dim, d, alpha = 1)
+
+rcondProbMat(n, dim, d, alpha = 1, condition)
 }
 \arguments{
 \item{n}{number of distributions}
@@ -27,8 +30,12 @@ contingency table of dimension \code{dim}, and the probabilities
 are generated using a Dirichlet distribution with parameters all 
 equal to \code{alpha}.
 }
+\section{Functions}{
+\itemize{
+\item \code{rcondProbMat}: Random conditional distributions
+}}
+
 \examples{
 dat <- rprobMat(10, c(2,2,2))
 
 }
-

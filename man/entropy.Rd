@@ -2,21 +2,25 @@
 % Please edit documentation in R/entropy.R
 \name{entropy}
 \alias{entropy}
-\alias{entropy.array}
 \alias{entropy.default}
+\alias{entropy.array}
 \alias{entropy.tables}
 \title{Calculate entropy of discrete distribution}
 \usage{
 entropy(p, ...)
 
-\method{entropy}{default}(p)
+\method{entropy}{default}(p, ...)
 
-\method{entropy}{array}(p, margin)
+\method{entropy}{array}(p, margin, ...)
 
-\method{entropy}{tables}(p, margin)
+\method{entropy}{tables}(p, margin, ...)
 }
 \arguments{
 \item{p}{non-negative numeric vector}
+
+\item{...}{other arguments to methods}
+
+\item{margin}{margin to consider}
 }
 \description{
 Calculate entropy of discrete distribution

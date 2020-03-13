@@ -1,3 +1,7 @@
+##' @import rje
+##' @importFrom utils head
+##' @importFrom stats rgamma
+
 .onLoad <- function(libname, pkgname) {
   vig_list = tools::vignetteEngine(name='knitr', package = 'knitr')
   vweave <- vig_list[['knitr::knitr']][c('weave')][[1]]

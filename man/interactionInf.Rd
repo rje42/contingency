@@ -9,6 +9,13 @@ interactionInf(p, ...)
 
 \method{interactionInf}{default}(p, ..., condition)
 }
+\arguments{
+\item{p}{object to find interaction information for}
+
+\item{...}{other arguments to methods}
+
+\item{condition}{variables on which to condition}
+}
 \description{
 Interaction information
 }

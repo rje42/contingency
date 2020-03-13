@@ -4,18 +4,17 @@
 \alias{margin.tables}
 \title{Get the marginal distributions}
 \usage{
-\method{margin}{tables}(x, margin = NULL, order = TRUE)
+\method{margin}{tables}(x, margin = NULL, order = TRUE, ...)
 }
 \arguments{
-\item{x}{an object of class \code{probMat}}
+\item{x}{an object of class \code{tables}}
 
 \item{margin}{integer vector giving margin to be calculated (1 for rows, etc.)}
 
 \item{order}{logical indicating whether resulting indices
 should be in the same order as stated in \code{margin}}
 
-\item{sorted}{logical indicating whether vector \code{margin} 
-is already in numerical order}
+\item{...}{other arguments to function}
 }
 \description{
 Get the marginal distributions
@@ -23,4 +22,3 @@ Get the marginal distributions
 \details{
 Calculates marginal distributions for each entry in a \code{probMat}.
 }
-

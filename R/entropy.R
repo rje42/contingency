@@ -1,29 +1,35 @@
 ##' Calculate entropy of discrete distribution
 ##' 
 ##' @param p non-negative numeric vector
+##' @param ... other arguments to methods
+##' 
 ##' @export entropy
 entropy <- function(p, ...) {
   UseMethod("entropy")
 }
 
 ##' @describeIn entropy Default method for vectors
-##' @export entropy.default
-entropy.default <- function(p) {
+##' @method entropy default
+##' @export
+entropy.default <- function(p, ...) {
   q <- p[p>0]
   -sum(q*log(q))/sum(q)
 }
 
 ##' @describeIn entropy Method for arrays
-##' @export entropy.array
-entropy.array <- function(p, margin) {
+##' @method entropy array
+##' @export
+entropy.array <- function(p, margin, ...) {
   if (!missing(margin)) p <- marginTable(p, margin)
   q <- p[p > 0]
   -sum(q*log(q))/sum(q)
 }
 
 ##' @describeIn entropy Method for \code{tables} object
-##' @export entropy.tables
-entropy.tables <- function(p, margin) {
+##' @param margin margin to consider
+##' @method entropy tables
+##' @export
+entropy.tables <- function(p, margin, ...) {
   if (!missing(margin)) p <- margin.tables(p, margin)
   tmp <- p*log(p)
   tmp[is.nan(tmp)] <- 0
@@ -35,14 +41,17 @@ entropy.tables <- function(p, margin) {
 ##' @param p numeric array or \code{tables} class
 ##' @param m1,m2 margins for mutual information
 ##' @param condition conditional margin
+##' @param ... other arguments to methods
+##' 
 ##' @export mutualInf
 mutualInf <- function(p, m1, m2, condition, ...) {
   UseMethod("mutualInf")
 }
 
 ##' @describeIn mutualInf Default method for vectors
-##' @export mutualInf.default
-mutualInf.default <- function(p, m1, m2, condition) {
+##' @method mutualInf default
+##' @export
+mutualInf.default <- function(p, m1, m2, condition, ...) {
   if (missing(condition)) condition <- integer(0)
   if (length(intersect(m1,m2)) > 0 || length(intersect(c(m1,m2),condition))) stop("Variable sets must be disjoint")
   else tmp <- margin(p, c(m1, m2, condition))/sum(p)
@@ -61,8 +70,9 @@ mutualInf.default <- function(p, m1, m2, condition) {
 }
 
 ##' @describeIn mutualInf Method for \code{tables} object
-##' @export mutualInf.tables
-mutualInf.tables <- function(p, m1, m2, condition) {
+##' @method mutualInf tables
+##' @export
+mutualInf.tables <- function(p, m1, m2, condition, ...) {
   if (missing(condition)) condition <- integer(0)
   if (length(intersect(m1,m2)) > 0 || length(intersect(c(m1,m2),condition))) stop("Variable sets must be disjoint")
   else tmp <- margin(p, c(m1, m2, condition))
@@ -85,11 +95,16 @@ mutualInf.tables <- function(p, m1, m2, condition) {
 
 ##' Interaction information
 ##' 
+##' @param p object to find interaction information for
+##' @param ... other arguments to methods
+##' 
 ##' @export interactionInf
 interactionInf <- function(p, ...) UseMethod("interactionInf")
 
 ##' @describeIn interactionInf Default method for vectors
-##' @export interactionInf.default
+##' @param condition variables on which to condition
+##' @method interactionInf default
+##' @export
 interactionInf.default <- function(p, ..., condition) {
   dots <- list(...)
   if (missing(condition)) condition=integer(0)
@@ -108,6 +123,7 @@ interactionInf.default <- function(p, ..., condition) {
 ##' Get the KL Divergence between two discrete distributions
 ##' 
 ##' @param x,y vectors (of probabilities)
+##' @param ... other arguments to methods
 ##' 
 ##' @export kl
 kl <- function(x, y, ...) {
@@ -115,16 +131,18 @@ kl <- function(x, y, ...) {
 }
 
 ##' @describeIn kl Default method for vectors
-##' @export kl.default
-kl.default <- function(x, y) {
+##' @method kl default
+##' @export
+kl.default <- function(x, y, ...) {
   sum(x[y > 0]*log(x[y > 0]/y[y > 0]))
 }
 
 ##' @describeIn kl Method for \code{tables} object
-##' @export kl.tables
-kl.tables <- function(x, y) {
+##' @method kl tables
+##' @export 
+kl.tables <- function(x, y, ...) {
   
-  if (!("tables" %in% class(y))) y <- as.tables(y) 
+  if (!("tables" %in% class(y))) y <- as_tables(y) 
 
   nx = ntables(x)
   ny = ntables(y)

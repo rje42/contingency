@@ -69,23 +69,23 @@ mutualInf(tab, 2, 3)   # second and third dimensions
 mutualInf(tab, 2, 3, cond=1)   # conditional mutual information
 ```
 
-## Graphical Models
+<!-- ## Graphical Models -->
 
-Using the `MixedGraphs` package, one can generate 
-distributions satisfying the Markov properties of
-a directed acyclic graph.  For example:
-```{r}
-require(MixedGraphs)
-dag1 <- graphCr("1 -> 3 <- 2")
-tab3 <- rDAGmodel(dag1, 10)
-```
-Now the graph implies that the first
-and second margins are independent.  We can use 
-`checkCI()` to confirm this.  By default it uses
-machine precision.
-```{r}
-checkCI(tab3, 1, 2)  # should be TRUE
-checkCI(tab3, 1, 3)  # FALSE with very high prob.
-```
+<!-- Using the `MixedGraphs` package, one can generate  -->
+<!-- distributions satisfying the Markov properties of -->
+<!-- a directed acyclic graph.  For example: -->
+<!-- ```{r} -->
+<!-- library(MixedGraphs) -->
+<!-- dag1 <- graphCr("1 -> 3 <- 2") -->
+<!-- tab3 <- rDAGmodel(dag1, 10) -->
+<!-- ``` -->
+<!-- Now the graph implies that the first -->
+<!-- and second margins are independent.  We can use  -->
+<!-- `checkCI()` to confirm this.  By default it uses -->
+<!-- machine precision. -->
+<!-- ```{r} -->
+<!-- checkCI(tab3, 1, 2)  # should be TRUE -->
+<!-- checkCI(tab3, 1, 3)  # FALSE with very high prob. -->
+<!-- ``` -->
 
 

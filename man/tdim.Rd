@@ -2,12 +2,17 @@
 % Please edit documentation in R/probMat.R
 \name{tdim}
 \alias{tdim}
+\alias{tdim<-}
 \title{Dimension of distributions over contingency tables}
 \usage{
 tdim(x)
+
+tdim(x) <- value
 }
 \arguments{
 \item{x}{an object of class \code{tables}}
+
+\item{value}{value to set parameters to}
 }
 \value{
 an integer vector of the dimensions
@@ -20,4 +25,8 @@ The class \code{tables} is used to represent a collection of
 multidimentional tables; this function
 returns the dimension of each table.
 }
+\section{Functions}{
+\itemize{
+\item \code{tdim<-}: assign tables dimension
+}}
 

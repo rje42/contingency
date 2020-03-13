@@ -8,9 +8,9 @@
 \usage{
 mutualInf(p, m1, m2, condition, ...)
 
-\method{mutualInf}{default}(p, m1, m2, condition)
+\method{mutualInf}{default}(p, m1, m2, condition, ...)
 
-\method{mutualInf}{tables}(p, m1, m2, condition)
+\method{mutualInf}{tables}(p, m1, m2, condition, ...)
 }
 \arguments{
 \item{p}{numeric array or \code{tables} class}
@@ -18,6 +18,8 @@ mutualInf(p, m1, m2, condition, ...)
 \item{m1, m2}{margins for mutual information}
 
 \item{condition}{conditional margin}
+
+\item{...}{other arguments to methods}
 }
 \description{
 (Conditional) mutual information

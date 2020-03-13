@@ -11,6 +11,8 @@
 ##' @param x an array or object of class \code{tables}
 ##' @param A,B the sets of variables whose independence is to be tested
 ##' @param C conditioning set (possibly empty)
+##' @param eps tolerance parameter
+##' @param ... other arguments to methods
 ##' 
 ##' @export checkCI
 checkCI <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
@@ -18,8 +20,9 @@ checkCI <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
 }
 
 #' @describeIn checkCI method for \code{array} object
-#' @export checkCI.array
-checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps) {
+#' @method checkCI array
+#' @export 
+checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
   A <- setdiff(A,C)
   B <- setdiff(B,C)
   if (length(A) == 0 || length(B) == 0) return(TRUE)
@@ -38,8 +41,9 @@ checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps) {
 }
 
 #' @describeIn checkCI method for \code{tables} object
-#' @export checkCI.tables
-checkCI.tables <- function(x, A, B, C=integer(0), eps=.Machine$double.eps) {
+#' @method checkCI tables
+#' @export
+checkCI.tables <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
   n <- ntables(x)
   A <- setdiff(A,C)
   B <- setdiff(B,C)

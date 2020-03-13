@@ -4,9 +4,13 @@
 \alias{as.matrix.tables}
 \title{Convert tables into matrix}
 \usage{
-\method{as.matrix}{tables}(x)
+\method{as.matrix}{tables}(x, ...)
+}
+\arguments{
+\item{x}{\code{tables} object}
+
+\item{...}{other arguments}
 }
 \description{
 Convert tables into matrix
 }
-

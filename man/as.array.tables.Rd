@@ -4,9 +4,13 @@
 \alias{as.array.tables}
 \title{Convert tables into array}
 \usage{
-\method{as.array}{tables}(x)
+\method{as.array}{tables}(x, ...)
+}
+\arguments{
+\item{x}{\code{tables} object}
+
+\item{...}{other arguments}
 }
 \description{
 Convert tables into array
 }
-

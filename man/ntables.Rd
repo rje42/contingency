@@ -16,4 +16,3 @@ Number of tables
 Gives the number of tables in an object of class 
 \code{tables}.
 }
-

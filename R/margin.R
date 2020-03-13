@@ -1,29 +1,45 @@
-##' @export margin
+##' Get margin of a table or tables
+##' 
+##' 
+##' @param x a contingency table or \code{tables} object
+##' @param ... a contingency table or \code{tables} object
+##' 
+##' @details \code{margin2} keeps all dimensions, and 
+##' hence results will sum to the number of cells summed over.
+##' 
+##' @export 
 margin <- function(x, ...) UseMethod("margin")
-##' @export margin2
+##' @describeIn margin keep all dimensions
+##' @export 
 margin2 <- function(x, ...) UseMethod("margin2")
-##' @export conditional
+##' @describeIn margin conditional distributions
+##' @export 
 conditional <- function(x, ...) UseMethod("conditional")
-##' @export conditional2
+##' @describeIn margin  conditional distributions with all dimensions kept
+##' @export 
 conditional2 <- function(x, ...) UseMethod("conditional2")
-##' @export intervention
+##' @describeIn margin interventional distributions
+##' @export 
 intervention <- function(x, ...) UseMethod("intervention")
 
-##' @export margin.default
-margin.default <- function(x, margin=NULL, order=TRUE) {
+##' @method margin default
+##' @export
+margin.default <- function(x, margin=NULL, order=TRUE, ...) {
   marginTable(x, margin, order)
 }
 
-##' @export margin2.default
-margin2.default <- function(x, margin=NULL) {
+##' @method margin2 default
+##' @export
+margin2.default <- function(x, margin=NULL, ...) {
   out <- marginTable(x, margin)
   out <- out[patternRepeat0(margin, dim(x), keep.order=TRUE)]
   dim(out) <- dim(x)
   out
 }
 
-##' @export margin2.tables
-margin2.tables <- function(x, margin=NULL) {
+##' @method margin2 tables
+##' @export
+margin2.tables <- function(x, margin=NULL, ...) {
   out <- margin(x, margin)
   out <- out[patternRepeat0(c(1,margin+1), c(ntables(x), tdim(x)), keep.order=TRUE)]
   dim(out) <- dim(x)
@@ -32,15 +48,17 @@ margin2.tables <- function(x, margin=NULL) {
   out  
 }
 
-##' @export conditional.default
-conditional.default <- function(x, variables, condition = NULL, condition.value = NULL, undef=NaN) {
+##' @method conditional default
+##' @export
+conditional.default <- function(x, variables, condition = NULL, condition.value = NULL, undef=NaN, ...) {
   out = conditionTable(x, variables, condition, condition.value, undef=undef)
 #  if (!is.nan(undef)) out[is.nan(out)] = undef
   out
 }
 
-##' @export conditional2.default
-conditional2.default <- function(x, variables, condition = NULL, undef=NaN) {
+##' @method conditional2 default
+##' @export
+conditional2.default <- function(x, variables, condition = NULL, undef=NaN, ...) {
   out = conditionTable2(x, variables, condition, undef=undef)
   if (!is.nan(undef)) out[is.nan(out)] = undef
   out
@@ -49,16 +67,16 @@ conditional2.default <- function(x, variables, condition = NULL, undef=NaN) {
 
 ##' Get the marginal distributions
 ##' 
-##' @param x an object of class \code{probMat}
+##' @param x an object of class \code{tables}
 ##' @param margin integer vector giving margin to be calculated (1 for rows, etc.)
 ##' @param order logical indicating whether resulting indices
 ##' should be in the same order as stated in \code{margin} 
-##' @param sorted logical indicating whether vector \code{margin} 
-##' is already in numerical order
+##' @param ... other arguments to function
 ##' 
 ##' @details Calculates marginal distributions for each entry in a \code{probMat}.
-##' @export margin.tables
-margin.tables <- function(x, margin=NULL, order=TRUE) {
+##' @method margin tables
+##' @export
+margin.tables <- function(x, margin=NULL, order=TRUE, ...) {
   if (!order) margin <- sort.int(margin)
 
   out <- marginTable(as.array(x), c(1,margin+1), order=order)
@@ -69,8 +87,9 @@ margin.tables <- function(x, margin=NULL, order=TRUE) {
   out  
 }
 
-##' @export conditional.tables
-conditional.tables <- function(x, variables, condition = NULL, condition.value = NULL, undef = NaN) {
+##' @method conditional tables
+##' @export
+conditional.tables <- function(x, variables, condition = NULL, condition.value = NULL, undef = NaN, ...) {
   #if (!order) margin <- sort.int(margin)
   n <- ntables(x)
   p <- tdim(x)
@@ -99,8 +118,9 @@ conditional.tables <- function(x, variables, condition = NULL, condition.value =
   out    
 }
 
-##' @export conditional2.tables
-conditional2.tables <- function(x, variables, condition = NULL, undef = NaN) {
+##' @method conditional2 tables
+##' @export
+conditional2.tables <- function(x, variables, condition = NULL, undef = NaN, ...) {
   n <- ntables(x)
   if (max(variables, condition) > length(tdim(x))) stop("Not enough dimensions in table")
   out <- conditionTable2(as.array(x), variables=variables+1, condition=c(1,condition+1), undef=undef)
@@ -113,13 +133,15 @@ conditional2.tables <- function(x, variables, condition = NULL, undef = NaN) {
   out    
 }
 
-##' @export intervention.default
-intervention.default <- function(x, variables, condition) {
+##' @method intervention default
+##' @export
+intervention.default <- function(x, variables, condition, ...) {
   interventionTable(x, variables, condition)
 }
 
-##' @export intervention.tables
-intervention.tables <- function(x, variables, condition) {
+##' @method intervention tables
+##' @export
+intervention.tables <- function(x, variables, condition, ...) {
   tmp = conditional2(x, variables, condition, undef = .5)
   x = x/c(tmp)
   x

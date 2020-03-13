@@ -4,14 +4,15 @@
 \alias{aperm.tables}
 \title{Permute dimensions of tables}
 \usage{
-\method{aperm}{tables}(a, perm)
+\method{aperm}{tables}(a, perm, ...)
 }
 \arguments{
 \item{a}{object of class \code{tables}}
 
 \item{perm}{permutation of 1,...,k, where each table has k dimensions}
+
+\item{...}{other arguments to methods}
 }
 \description{
 Method for permuting indices of tables object.
 }
-

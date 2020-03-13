@@ -2,11 +2,23 @@
 % Please edit documentation in R/probMat.R
 \name{tdimnames}
 \alias{tdimnames}
+\alias{tdimnames<-}
 \title{Dimension names for distributions over contingency tables}
 \usage{
 tdimnames(x)
+
+tdimnames(x) <- value
+}
+\arguments{
+\item{x}{\code{tables} object}
+
+\item{value}{value to set dimension names to}
 }
 \description{
 Dimension names for distributions over contingency tables
 }
+\section{Functions}{
+\itemize{
+\item \code{tdimnames<-}: assign dimension names
+}}
 

@@ -40,6 +40,8 @@ rprobMat = function(n, dim, d, alpha=1) {
   out
 }
 
+##' @describeIn rprobMat Random conditional distributions
+##' @export rcondProbMat
 rcondProbMat <- function(n, dim, d, alpha=1, condition) {
   ## if dimension vector shorter than length d, recycle (with warning
   ## if necessary)
@@ -82,7 +84,7 @@ rcondProbMat <- function(n, dim, d, alpha=1, condition) {
 ##' If only one index is specified, then the function behaves just as ordinary subsetting
 ##' on an array.
 ##' 
-##' @export [.tables
+##' @export
 `[.tables` <- function(x, i, j, ..., drop=TRUE, keep=FALSE) {
   mdrop <- missing(drop); mkeep <- missing(keep)
   Nargs <- nargs() - (!mdrop) - (!mkeep)
@@ -128,8 +130,13 @@ rcondProbMat <- function(n, dim, d, alpha=1, condition) {
 }
 
 ##' Convert tables into array
-##' @export as.array.tables
-as.array.tables <- function(x) {
+##' 
+##' @param x \code{tables} object
+##' @param ... other arguments
+##' 
+##' @method as.array tables
+##' @export 
+as.array.tables <- function(x, ...) {
    n <- ntables(x)
    dim(x) <- c(n, tdim(x))
 #    tdim(x) <- NULL
@@ -149,8 +156,13 @@ as.array.tables <- function(x) {
 # }
 
 ##' Convert tables into matrix
-##' @export as.matrix.tables
-as.matrix.tables <- function(x) {
+##' 
+##' @param x \code{tables} object
+##' @param ... other arguments
+##' 
+##' @method as.matrix tables
+##' @export 
+as.matrix.tables <- function(x, ...) {
   class(x) <- "matrix"
   attr(x, "tdim") <- NULL
   attr(x, "tdimnames") <- NULL
@@ -170,33 +182,44 @@ as.matrix.tables <- function(x) {
 # }
 
 ##' Dimension of distributions over contingency tables
+##' 
 ##' @param x an object of class \code{tables}
+##' 
 ##' @details The class \code{tables} is used to represent a collection of 
 ##' multidimentional tables; this function
 ##' returns the dimension of each table.
+##' 
 ##' @return an integer vector of the dimensions
+##' 
 ##' @export tdim
-##' @export tdim<-
 tdim <- function(x) attr(x, "tdim")
+##' @describeIn tdim assign tables dimension
+##' @param value value to set parameters to
+##' @export tdim<-
 `tdim<-` <- function(x, value) {
   attr(x, "tdim") <- value
   x
 }
 ##' Dimension names for distributions over contingency tables
+##' 
+##' @param x \code{tables} object
+##' 
 ##' @export tdimnames
-##' @export tdimnames<-
 tdimnames <- function(x) attr(x, "tdimnames")
+##' @describeIn tdimnames assign dimension names
+##' @param value value to set dimension names to
+##' @export tdimnames<-
 `tdimnames<-` <- function(x, value) {
   attr(x, "tdimnames") = value
   x
 }
 
-cmpfun(`tdim<-`)
-cmpfun(tdim)
-cmpfun(`tdimnames<-`)
-cmpfun(tdimnames)
-cmpfun(`[.tables`)
-cmpfun(as.matrix.tables)
+# cmpfun(`tdim<-`)
+# cmpfun(tdim)
+# cmpfun(`tdimnames<-`)
+# cmpfun(tdimnames)
+# cmpfun(`[.tables`)
+# cmpfun(as.matrix.tables)
 
 ##' Number of tables
 ##' @param x an object of class \code{tables}
@@ -212,7 +235,8 @@ ntables <- function(x) {
 ##' Print method for object of class \code{tables}.
 ##' @param x object of class \code{tables}
 ##' @param ... arguments to pass to print method for an array
-##' @export print.tables
+##' @method print tables
+##' @export 
 print.tables = function(x, ...) {
   
   if (is.null(dim(x)) || length(dim(x)) == 1) {
@@ -257,9 +281,11 @@ print.tables = function(x, ...) {
 ##' 
 ##' @param a object of class \code{tables}
 ##' @param perm permutation of 1,...,k, where each table has k dimensions
+##' @param ... other arguments to methods
 ##' 
-##' @export aperm.tables
-aperm.tables <- function(a, perm) {
+##' @method aperm tables
+##' @export
+aperm.tables <- function(a, perm, ...) {
   mdims <- dim(a)
   dim(a) <- c(ntables(a), tdim(a))
   out <- aperm.default(a, c(1,perm+1))
@@ -273,17 +299,42 @@ aperm.tables <- function(a, perm) {
 
 ##' As tables
 ##' 
-as.tables <- function(x, ...) {
-  UseMethod("as.tables")
+##' @param x array or matrix object
+##' @param ... other arguments for methods
+##' 
+##' @export
+as_tables <- function(x, ...) {
+  UseMethod("as_tables")
 }
 
-as.tables.array <- function(x) {
+##' @method as_tables default
+##' @export
+as_tables.default <- function(x, ...) {
+  class(x) = "tables"
+  
+  tdim(x) = length(x)
+  dim(x) = c(1, tdim(x))
+  
+  x
+}
+
+##' @method as_tables matrix
+##' @export
+as_tables.matrix <- function(x, ...) {
   class(x) = "tables"
   tdim(x) = dim(x)
   dim(x) = c(1, prod(tdim(x)))
   x
 }
 
-# as.tables.default <- 
-# as.tables.matrix <-
+##' @method as_tables array
+##' @export
+as_tables.array <- function(x, ...) {
+  class(x) = "tables"
+  tdim(x) = dim(x)
+  dim(x) = c(1, prod(tdim(x)))
+  x
+}
+
+
 # as.tables.data.frame <-
