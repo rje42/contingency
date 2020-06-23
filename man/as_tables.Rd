@@ -4,10 +4,12 @@
 \alias{as_tables}
 \title{As tables}
 \usage{
-as_tables(x, ...)
+as_tables(x, tdim, ...)
 }
 \arguments{
 \item{x}{array or matrix object}
+
+\item{tdim}{dimensions for each table}
 
 \item{...}{other arguments for methods}
 }

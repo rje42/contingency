@@ -253,7 +253,7 @@ print.tables = function(x, ...) {
   cat("Group of ", n, " numeric tables of dimension ", dim_str, "\n", sep="")
   
   if (n > 0) {cat("First entry:\n")
-    y = as.matrix(x)[1,]
+    y = x[1,]
     dim(y) = dims
     dimnames(y) = tdimnames(x)
     print.default(y, ...)
@@ -300,39 +300,68 @@ aperm.tables <- function(a, perm, ...) {
 ##' As tables
 ##' 
 ##' @param x array or matrix object
+##' @param tdim dimensions for each table
 ##' @param ... other arguments for methods
 ##' 
 ##' @export
-as_tables <- function(x, ...) {
+as_tables <- function(x, tdim, ...) {
   UseMethod("as_tables")
 }
 
 ##' @method as_tables default
 ##' @export
-as_tables.default <- function(x, ...) {
+as_tables.default <- function(x, tdim, ...) {
   class(x) = "tables"
   
-  tdim(x) = length(x)
-  dim(x) = c(1, tdim(x))
+  if (missing(tdim)) {
+    contingency::tdim(x) = length(x)
+    dim(x) = c(1, length(x))
+  }
+  else {
+    contingency::tdim(x) = tdim
+    N <- length(x)/prod(tdim)
+    if (N != ceiling(N)) warning("Supplied dimensions don't give a whole number of tables")
+    dim(x) = c(ceiling(N), prod(tdim))
+  }
+  
   
   x
 }
 
 ##' @method as_tables matrix
 ##' @export
-as_tables.matrix <- function(x, ...) {
+as_tables.matrix <- function(x, tdim, ...) {
   class(x) = "tables"
-  tdim(x) = dim(x)
-  dim(x) = c(1, prod(tdim(x)))
+  if (missing(tdim)) {
+    contingency::tdim(x) = dim(x)
+    dim(x) = c(1, prod(dim(x)))
+  }
+  else {
+    contingency::tdim(x) = tdim
+    N <- length(x)/prod(tdim)
+    if (N != ceiling(N)) warning("Supplied dimensions don't give a whole number of tables")
+    dim(x) = c(ceiling(N), prod(tdim))
+  }
+  
   x
 }
 
 ##' @method as_tables array
 ##' @export
-as_tables.array <- function(x, ...) {
+as_tables.array <- function(x, tdim, ...) {
   class(x) = "tables"
-  tdim(x) = dim(x)
-  dim(x) = c(1, prod(tdim(x)))
+  
+  if (missing(tdim)) {
+    contingency::tdim(x) = dim(x)
+    dim(x) = c(1, prod(dim(x)))
+  }
+  else {
+    contingency::tdim(x) = tdim
+    N <- length(x)/prod(tdim)
+    if (N != ceiling(N)) warning("Supplied dimensions don't give a whole number of tables")
+    dim(x) = c(ceiling(N), prod(tdim))
+  }
+  
   x
 }
 
