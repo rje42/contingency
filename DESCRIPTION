@@ -1,6 +1,6 @@
 Package: contingency
 Title: Discrete multivariate probability distributions
-Version: 0.1.004
+Version: 0.1.005
 Authors@R: "Robin Evans <evans@stats.ox.ac.uk> [aut, cre]"
 Description: Provides an object class for dealing with many multivariate
     probability distributions at once, useful for simulation.
@@ -13,4 +13,4 @@ Suggests:
     knitr,
     testthat
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

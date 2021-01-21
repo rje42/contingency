@@ -12,6 +12,8 @@ perm_dim(x, k, perm, ...)
 \item{k}{index to permute}
 
 \item{perm}{permutation to perform}
+
+\item{...}{other arguments (not currently used)}
 }
 \description{
 Currently only works for binary dimensions.

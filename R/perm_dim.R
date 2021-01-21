@@ -5,6 +5,7 @@
 ##' @param x array or related object
 ##' @param k index to permute
 ##' @param perm permutation to perform
+##' @param ... other arguments (not currently used)
 ##' 
 ##' @details Permutes the levels of one variable 
 ##' according to the permutation given in \code{perm}.
