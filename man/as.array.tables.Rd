@@ -11,6 +11,9 @@
 
 \item{...}{other arguments}
 }
+\value{
+An \code{array} object
+}
 \description{
 Convert tables into array
 }

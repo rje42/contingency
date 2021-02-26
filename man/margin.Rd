@@ -23,6 +23,11 @@ intervention(x, ...)
 
 \item{...}{a contingency table or \code{tables} object}
 }
+\value{
+an object of the same class as \code{x}.  The resulting
+array, or collection of tables, will contain a marginal, conditional
+or interventional distribution.
+}
 \description{
 Get margin of a table or tables
 }

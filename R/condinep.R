@@ -14,6 +14,10 @@
 ##' @param eps tolerance parameter
 ##' @param ... other arguments to methods
 ##' 
+##' @return A logical, or a vector of logicals of the same length as the number
+##' of tables provided, indicating whether the conditional independence seems 
+##' to hold numerically.
+##' 
 ##' @export checkCI
 checkCI <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
   UseMethod("checkCI")

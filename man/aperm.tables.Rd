@@ -13,6 +13,9 @@
 
 \item{...}{other arguments to methods}
 }
+\value{
+A permuted \code{tables} object.
+}
 \description{
 Method for permuting indices of tables object.
 }

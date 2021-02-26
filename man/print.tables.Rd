@@ -11,6 +11,9 @@
 
 \item{...}{arguments to pass to print method for an array}
 }
+\value{
+The input provided (invisibly).
+}
 \description{
 Print method for object of class \code{tables}.
 }

@@ -7,6 +7,10 @@
 ##' @details \code{margin2} keeps all dimensions, and 
 ##' hence results will sum to the number of cells summed over.
 ##' 
+##' @return an object of the same class as \code{x}.  The resulting
+##' array, or collection of tables, will contain a marginal, conditional
+##' or interventional distribution.
+##' 
 ##' @export 
 margin <- function(x, ...) UseMethod("margin")
 ##' @describeIn margin keep all dimensions
@@ -74,6 +78,10 @@ conditional2.default <- function(x, variables, condition = NULL, undef=NaN, ...)
 ##' @param ... other arguments to function
 ##' 
 ##' @details Calculates marginal distributions for each entry in a \code{probMat}.
+##' 
+##' @return An object of class \code{tables} consisting of the required marginal 
+##' distribution.
+##' 
 ##' @method margin tables
 ##' @export
 margin.tables <- function(x, margin=NULL, order=TRUE, ...) {

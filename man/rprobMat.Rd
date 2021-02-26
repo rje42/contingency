@@ -20,6 +20,9 @@ rcondProbMat(n, dim, d, alpha = 1, condition)
 
 \item{condition}{which dimensions should be conditioned upon}
 }
+\value{
+A \code{tables} object containing random distributions.
+}
 \description{
 Generates discrete probability distributions in a matrix.
 }

@@ -22,6 +22,9 @@ entropy(p, ...)
 
 \item{margin}{margin to consider}
 }
+\value{
+A numeric value of the entopy, or vector of entropies.
+}
 \description{
 Calculate entropy of discrete distribution
 }

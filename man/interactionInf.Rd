@@ -16,6 +16,10 @@ interactionInf(p, ...)
 
 \item{condition}{variables on which to condition}
 }
+\value{
+Numeric value for interaction information, or a vector of 
+interaction information values.
+}
 \description{
 Interaction information
 }

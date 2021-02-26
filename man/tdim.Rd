@@ -16,6 +16,8 @@ tdim(x) <- value
 }
 \value{
 an integer vector of the dimensions
+
+the \code{tables} object inputted with the new dimensions
 }
 \description{
 Dimension of distributions over contingency tables

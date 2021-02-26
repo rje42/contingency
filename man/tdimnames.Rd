@@ -14,6 +14,9 @@ tdimnames(x) <- value
 
 \item{value}{value to set dimension names to}
 }
+\value{
+the \code{tables} object inputted with the new dimension names
+}
 \description{
 Dimension names for distributions over contingency tables
 }

@@ -9,6 +9,9 @@ ntables(x)
 \arguments{
 \item{x}{an object of class \code{tables}}
 }
+\value{
+An integer.
+}
 \description{
 Number of tables
 }

@@ -19,6 +19,9 @@
 
 \item{keep}{if only one table is specified with \code{i}, should the object output be an object of class \code{tables}?  If not becomes a suitable array.}
 }
+\value{
+A tables object over the specific entries and values selected.
+}
 \description{
 Take subset of tables class.
 }
@@ -31,4 +34,11 @@ have the same effect for 2x2x2 tables.
 
 If only one index is specified, then the function behaves just as ordinary subsetting
 on an array.
+}
+\examples{
+x <- rprobMat(n=10, rep(2,3))
+x[1,]
+x[,1,1:2,1]
+x[,1,1:2,1,drop=FALSE]
+
 }

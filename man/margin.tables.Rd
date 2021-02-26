@@ -16,6 +16,10 @@ should be in the same order as stated in \code{margin}}
 
 \item{...}{other arguments to function}
 }
+\value{
+An object of class \code{tables} consisting of the required marginal 
+distribution.
+}
 \description{
 Get the marginal distributions
 }

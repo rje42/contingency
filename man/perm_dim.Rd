@@ -15,6 +15,9 @@ perm_dim(x, k, perm, ...)
 
 \item{...}{other arguments (not currently used)}
 }
+\value{
+A permuted \code{array} or \code{tables} object.
+}
 \description{
 Currently only works for binary dimensions.
 }

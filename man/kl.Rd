@@ -17,6 +17,9 @@ kl(x, y, ...)
 
 \item{...}{other arguments to methods}
 }
+\value{
+a numberic value, vector or matrix of KL-divergences.
+}
 \description{
 Get the KL Divergence between two discrete distributions
 }

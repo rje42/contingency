@@ -11,6 +11,9 @@
 
 \item{...}{other arguments}
 }
+\value{
+A \code{matrix} object
+}
 \description{
 Convert tables into matrix
 }

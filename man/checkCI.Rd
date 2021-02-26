@@ -23,6 +23,11 @@ checkCI(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
 
 \item{...}{other arguments to methods}
 }
+\value{
+A logical, or a vector of logicals of the same length as the number
+of tables provided, indicating whether the conditional independence seems 
+to hold numerically.
+}
 \description{
 Gives a numerical check that a (conditional) independence holds in a probability distribution.
 }

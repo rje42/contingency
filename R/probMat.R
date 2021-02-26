@@ -14,10 +14,12 @@
 ##' are generated using a Dirichlet distribution with parameters all 
 ##' equal to \code{alpha}.
 ##' 
+##' @return A \code{tables} object containing random distributions.
+##' 
 ##' @examples
 ##' dat <- rprobMat(10, c(2,2,2))
 ##' 
-##' @export rprobMat
+##' @export 
 rprobMat = function(n, dim, d, alpha=1) {
   ## if dimension vector shorter than length d, recycle (with warning
   ## if necessary)
@@ -84,6 +86,14 @@ rcondProbMat <- function(n, dim, d, alpha=1, condition) {
 ##' If only one index is specified, then the function behaves just as ordinary subsetting
 ##' on an array.
 ##' 
+##' @return A tables object over the specific entries and values selected.
+##' 
+##' @examples 
+##' x <- rprobMat(n=10, rep(2,3))
+##' x[1,]
+##' x[,1,1:2,1]
+##' x[,1,1:2,1,drop=FALSE]
+##' 
 ##' @export
 `[.tables` <- function(x, i, j, ..., drop=TRUE, keep=FALSE) {
   mdrop <- missing(drop); mkeep <- missing(keep)
@@ -134,6 +144,8 @@ rcondProbMat <- function(n, dim, d, alpha=1, condition) {
 ##' @param x \code{tables} object
 ##' @param ... other arguments
 ##' 
+##' @return An \code{array} object
+##' 
 ##' @method as.array tables
 ##' @export 
 as.array.tables <- function(x, ...) {
@@ -159,6 +171,8 @@ as.array.tables <- function(x, ...) {
 ##' 
 ##' @param x \code{tables} object
 ##' @param ... other arguments
+##' 
+##' @return A \code{matrix} object
 ##' 
 ##' @method as.matrix tables
 ##' @export 
@@ -195,6 +209,7 @@ as.matrix.tables <- function(x, ...) {
 tdim <- function(x) attr(x, "tdim")
 ##' @describeIn tdim assign tables dimension
 ##' @param value value to set parameters to
+##' @return the \code{tables} object inputted with the new dimensions
 ##' @export tdim<-
 `tdim<-` <- function(x, value) {
   attr(x, "tdim") <- value
@@ -208,6 +223,7 @@ tdim <- function(x) attr(x, "tdim")
 tdimnames <- function(x) attr(x, "tdimnames")
 ##' @describeIn tdimnames assign dimension names
 ##' @param value value to set dimension names to
+##' @return the \code{tables} object inputted with the new dimension names
 ##' @export tdimnames<-
 `tdimnames<-` <- function(x, value) {
   attr(x, "tdimnames") = value
@@ -225,6 +241,7 @@ tdimnames <- function(x) attr(x, "tdimnames")
 ##' @param x an object of class \code{tables}
 ##' @details Gives the number of tables in an object of class 
 ##' \code{tables}.
+##' @return An integer.
 ##' @export ntables
 ntables <- function(x) {
   dim(x)[1]
@@ -235,6 +252,9 @@ ntables <- function(x) {
 ##' Print method for object of class \code{tables}.
 ##' @param x object of class \code{tables}
 ##' @param ... arguments to pass to print method for an array
+##' 
+##' @return The input provided (invisibly).
+##' 
 ##' @method print tables
 ##' @export 
 print.tables = function(x, ...) {
@@ -284,6 +304,9 @@ print.tables = function(x, ...) {
 ##' @param ... other arguments to methods
 ##' 
 ##' @method aperm tables
+##' 
+##' @return A permuted \code{tables} object.
+##' 
 ##' @export
 aperm.tables <- function(a, perm, ...) {
   mdims <- dim(a)
@@ -302,6 +325,8 @@ aperm.tables <- function(a, perm, ...) {
 ##' @param x array or matrix object
 ##' @param tdim dimensions for each table
 ##' @param ... other arguments for methods
+##' 
+##' @return A \code{tables} object.
 ##' 
 ##' @export
 as_tables <- function(x, tdim, ...) {

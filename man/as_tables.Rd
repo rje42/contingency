@@ -13,6 +13,9 @@ as_tables(x, tdim, ...)
 
 \item{...}{other arguments for methods}
 }
+\value{
+A \code{tables} object.
+}
 \description{
 As tables
 }

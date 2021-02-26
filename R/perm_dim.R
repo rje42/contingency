@@ -11,6 +11,8 @@
 ##' according to the permutation given in \code{perm}.
 ##' Can be applied to matrices, arrays or tables.
 ##' 
+##' @return A permuted \code{array} or \code{tables} object.
+##' 
 ##' @export 
 perm_dim <- function(x, k, perm, ...) {
   UseMethod("perm_dim")

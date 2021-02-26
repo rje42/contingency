@@ -3,6 +3,8 @@
 ##' @param p non-negative numeric vector
 ##' @param ... other arguments to methods
 ##' 
+##' @return A numeric value of the entopy, or vector of entropies.
+##' 
 ##' @export entropy
 entropy <- function(p, ...) {
   UseMethod("entropy")
@@ -42,6 +44,9 @@ entropy.tables <- function(p, margin, ...) {
 ##' @param m1,m2 margins for mutual information
 ##' @param condition conditional margin
 ##' @param ... other arguments to methods
+##' 
+##' @return Numeric value for mutual information, or a vector of mutual 
+##' information values.
 ##' 
 ##' @export mutualInf
 mutualInf <- function(p, m1, m2, condition, ...) {
@@ -98,6 +103,9 @@ mutualInf.tables <- function(p, m1, m2, condition, ...) {
 ##' @param p object to find interaction information for
 ##' @param ... other arguments to methods
 ##' 
+##' @return Numeric value for interaction information, or a vector of 
+##' interaction information values.
+##' 
 ##' @export interactionInf
 interactionInf <- function(p, ...) UseMethod("interactionInf")
 
@@ -124,6 +132,8 @@ interactionInf.default <- function(p, ..., condition) {
 ##' 
 ##' @param x,y vectors (of probabilities)
 ##' @param ... other arguments to methods
+##' 
+##' @return a numberic value, vector or matrix of KL-divergences.
 ##' 
 ##' @export kl
 kl <- function(x, y, ...) {

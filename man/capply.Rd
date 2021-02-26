@@ -13,6 +13,9 @@ capply(x, f, ...)
 
 \item{...}{additional arguments to \code{f}}
 }
+\value{
+a vector, matrix or list of outputs from the function \code{f}.
+}
 \description{
 Apply a function to each contingency table in a \code{tables} object.
 }
