@@ -1,6 +1,6 @@
 Package: contingency
 Title: Discrete Multivariate Probability Distributions
-Version: 0.0.7
+Version: 0.0.8
 Authors@R: person("Robin", "Evans", email = "evans@stats.ox.ac.uk",
                   role = c("aut", "cre"))
 Description: Provides an object class for dealing with many multivariate
@@ -15,4 +15,4 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

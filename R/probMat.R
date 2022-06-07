@@ -390,5 +390,14 @@ as_tables.array <- function(x, tdim, ...) {
   x
 }
 
+##' Create blank tables
+##' 
+##' @param n number of tables
+##' @param tdim dimension of each table
+##' 
+##' @export
+tables <- function(n, tdim) {
+  as_tables.array(array(1, dim=c(n, tdim)), tdim=tdim)
+}
 
 # as.tables.data.frame <-
