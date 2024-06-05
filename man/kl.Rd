@@ -25,8 +25,8 @@ Get the KL Divergence between two discrete distributions
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method for vectors
+\item \code{kl(default)}: Default method for vectors
 
-\item \code{tables}: Method for \code{tables} object
+\item \code{kl(tables)}: Method for \code{tables} object
+
 }}
-

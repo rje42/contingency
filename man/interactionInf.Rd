@@ -17,7 +17,7 @@ interactionInf(p, ...)
 \item{condition}{variables on which to condition}
 }
 \value{
-Numeric value for interaction information, or a vector of 
+Numeric value for interaction information, or a vector of
 interaction information values.
 }
 \description{
@@ -25,6 +25,6 @@ Interaction information
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method for vectors
-}}
+\item \code{interactionInf(default)}: Default method for vectors
 
+}}

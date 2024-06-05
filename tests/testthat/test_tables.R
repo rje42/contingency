@@ -16,3 +16,13 @@ test_that("[ operator for tables works correctly", {
   expect_equal(tdim(x[,1,3,2:3,drop=FALSE]), c(1,1,2))  
 })
 
+x2 <- tbind(x,x)
+x02 <- tbind(x[,,1,1],x[,,1,1])
+
+test_that("tbind works correctly", {
+  expect_equal(dim(x2), c(20,24))
+  expect_equal(x2[1,], x[1,])
+  expect_equal(x2[11,], x[1,])
+  expect_equal(dim(x02), c(20,2))
+  expect_error(tbind(x2,x02))
+})

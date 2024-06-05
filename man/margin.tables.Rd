@@ -2,9 +2,26 @@
 % Please edit documentation in R/margin.R
 \name{margin.tables}
 \alias{margin.tables}
+\alias{conditional.tables}
+\alias{conditional2.tables}
+\alias{intervention.tables}
 \title{Get the marginal distributions}
 \usage{
 \method{margin}{tables}(x, margin = NULL, order = TRUE, ...)
+
+\method{conditional}{tables}(
+  x,
+  variables,
+  condition = NULL,
+  condition.value = NULL,
+  force = FALSE,
+  undef = NaN,
+  ...
+)
+
+\method{conditional2}{tables}(x, variables, condition = NULL, force = FALSE, undef = NaN, ...)
+
+\method{intervention}{tables}(x, variables, condition, force = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{tables}}
@@ -15,9 +32,15 @@
 should be in the same order as stated in \code{margin}}
 
 \item{...}{other arguments to function}
+
+\item{condition}{variables to condition upon}
+
+\item{condition.value}{(optionally) values to condition upon}
+
+\item{undef}{value to return for undefined cells}
 }
 \value{
-An object of class \code{tables} consisting of the required marginal 
+An object of class \code{tables} consisting of the required marginal
 distribution.
 }
 \description{
@@ -26,3 +49,12 @@ Get the marginal distributions
 \details{
 Calculates marginal distributions for each entry in a \code{probMat}.
 }
+\section{Functions}{
+\itemize{
+\item \code{conditional(tables)}: condition in distributions
+
+\item \code{conditional2(tables)}: condition and keep all variables
+
+\item \code{intervention(tables)}: intervene on variables in distributions
+
+}}

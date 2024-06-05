@@ -21,7 +21,7 @@ intervention(x, ...)
 \arguments{
 \item{x}{a contingency table or \code{tables} object}
 
-\item{...}{a contingency table or \code{tables} object}
+\item{...}{other arguments, not currently used}
 }
 \value{
 an object of the same class as \code{x}.  The resulting
@@ -32,17 +32,17 @@ or interventional distribution.
 Get margin of a table or tables
 }
 \details{
-\code{margin2} keeps all dimensions, and 
-hence results will sum to the number of cells summed over.
+\code{margin2} keeps all dimensions, and
+hence results will sum to the original sum, times the number of cells summed over.
 }
 \section{Functions}{
 \itemize{
-\item \code{margin2}: keep all dimensions
+\item \code{margin2()}: keep all dimensions
 
-\item \code{conditional}: conditional distributions
+\item \code{conditional()}: conditional distributions
 
-\item \code{conditional2}: conditional distributions with all dimensions kept
+\item \code{conditional2()}: conditional distributions with all dimensions kept
 
-\item \code{intervention}: interventional distributions
+\item \code{intervention()}: interventional distributions
+
 }}
-

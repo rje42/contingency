@@ -25,7 +25,7 @@ checkCI(x, A, B, C = integer(0), eps = .Machine$double.eps, ...)
 }
 \value{
 A logical, or a vector of logicals of the same length as the number
-of tables provided, indicating whether the conditional independence seems 
+of tables provided, indicating whether the conditional independence seems
 to hold numerically.
 }
 \description{
@@ -33,15 +33,15 @@ Gives a numerical check that a (conditional) independence holds in a probability
 }
 \details{
 just tests to an appropriate numerical precision that a conditional independence
-holds: this is *not* a statistical test for conditional independence.
+holds: this is \emph{not} a statistical test for conditional independence.
 If \code{A} and \code{B} overlap with \code{C} then these vertices are ignored.  If \code{A}
 and \code{B} intersect with one another (but not \code{C}) then the solution is always
 false.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{array}: method for \code{array} object
+\item \code{checkCI(array)}: method for \code{array} object
 
-\item \code{tables}: method for \code{tables} object
+\item \code{checkCI(tables)}: method for \code{tables} object
+
 }}
-

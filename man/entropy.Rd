@@ -30,10 +30,10 @@ Calculate entropy of discrete distribution
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method for vectors
+\item \code{entropy(default)}: Default method for vectors
 
-\item \code{array}: Method for arrays
+\item \code{entropy(array)}: Method for arrays
 
-\item \code{tables}: Method for \code{tables} object
+\item \code{entropy(tables)}: Method for \code{tables} object
+
 }}
-

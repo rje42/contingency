@@ -22,7 +22,7 @@ mutualInf(p, m1, m2, condition, ...)
 \item{...}{other arguments to methods}
 }
 \value{
-Numeric value for mutual information, or a vector of mutual 
+Numeric value for mutual information, or a vector of mutual
 information values.
 }
 \description{
@@ -30,8 +30,8 @@ information values.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method for vectors
+\item \code{mutualInf(default)}: Default method for vectors
 
-\item \code{tables}: Method for \code{tables} object
+\item \code{mutualInf(tables)}: Method for \code{tables} object
+
 }}
-

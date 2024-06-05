@@ -37,7 +37,13 @@ of length 1 should be retained:
 tab[,1,1,,drop=FALSE]
 ```
 
-## Basic Manipulations
+We can also combine tables using `tbind`, provided that their `tdim` attributes
+match.
+```{r}
+tbind(tab, tab)
+```
+
+## Basic numerical manipulations
 
 Some basic operations are predefined, such as taking the margin of each table, or 
 calculating a conditional distribution.

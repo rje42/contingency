@@ -27,8 +27,8 @@ Get the multiinformation for a discrete distribution
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: Default method for vectors and arrays
+\item \code{multiInf(default)}: Default method for vectors and arrays
 
-\item \code{tables}: Method for \code{tables} object
+\item \code{multiInf(tables)}: Method for \code{tables} object
+
 }}
-

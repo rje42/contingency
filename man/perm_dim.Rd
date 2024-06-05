@@ -22,7 +22,7 @@ A permuted \code{array} or \code{tables} object.
 Currently only works for binary dimensions.
 }
 \details{
-Permutes the levels of one variable 
+Permutes the levels of one variable
 according to the permutation given in \code{perm}.
 Can be applied to matrices, arrays or tables.
 }

@@ -27,17 +27,17 @@ A \code{tables} object containing random distributions.
 Generates discrete probability distributions in a matrix.
 }
 \details{
-Returns an object of class \code{tables} consisting of 
-discrete probability distributions.  Each distribution is assumed to be a 
+Returns an object of class \code{tables} consisting of
+discrete probability distributions.  Each distribution is assumed to be a
 contingency table of dimension \code{dim}, and the probabilities
-are generated using a Dirichlet distribution with parameters all 
+are generated using a Dirichlet distribution with parameters all
 equal to \code{alpha}.
 }
 \section{Functions}{
 \itemize{
-\item \code{rcondProbMat}: Random conditional distributions
-}}
+\item \code{rcondProbMat()}: Random conditional distributions
 
+}}
 \examples{
 dat <- rprobMat(10, c(2,2,2))
 
