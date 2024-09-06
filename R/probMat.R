@@ -8,6 +8,7 @@
 ##' @param alpha parameter to use in dirichlet distribution
 ##' @param condition which dimensions should be conditioned upon
 ##' 
+##' 
 ##' @details Returns an object of class `tables` consisting of 
 ##' discrete probability distributions.  Each distribution is assumed to be a 
 ##' contingency table of dimension `dim`, and the probabilities
@@ -20,7 +21,7 @@
 ##' dat <- rprobMat(10, c(2,2,2))
 ##' 
 ##' @export 
-rprobMat <- function(n, dim, d, alpha=1) {
+rprobMat <- function(n, dim, d, alpha=1, rev=FALSE) {
   ## if dimension vector shorter than length d, recycle (with warning
   ## if necessary)
   if (missing(d)) d <- length(dim)
@@ -40,12 +41,14 @@ rprobMat <- function(n, dim, d, alpha=1) {
   attr(out, "conditional") <- integer(0)
 #  dim(out) <- c(dim, n)
   
-  out
+  if (rev) out <- reverse(out)
+  
+  return(out)
 }
 
 ##' @describeIn rprobMat Random conditional distributions
 ##' @export rcondProbMat
-rcondProbMat <- function(n, dim, d, alpha=1, condition) {
+rcondProbMat <- function(n, dim, d, alpha=1, condition, rev=FALSE) {
   ## if dimension vector shorter than length d, recycle (with warning
   ## if necessary)
   if (missing(d)) d <- length(dim)
@@ -66,5 +69,7 @@ rcondProbMat <- function(n, dim, d, alpha=1, condition) {
   attr(out, "tdim") <- dim
   attr(out, "conditional") <- condition
   
-  out
+  if (rev) out <- reverse(out)
+  
+  return(out)
 }

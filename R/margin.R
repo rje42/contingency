@@ -1,13 +1,13 @@
 ##' Get margin of a table or tables
 ##' 
 ##' 
-##' @param x a contingency table or \code{tables} object
+##' @param x a contingency table or `tables` object
 ##' @param ... other arguments, not currently used
 ##' 
-##' @details \code{margin2} keeps all dimensions, and 
+##' @details `margin2` keeps all dimensions, and 
 ##' hence results will sum to the original sum, times the number of cells summed over.
 ##' 
-##' @return an object of the same class as \code{x}.  The resulting
+##' @return an object of the same class as `x`.  The resulting
 ##' array, or collection of tables, will contain a marginal, conditional
 ##' or interventional distribution.
 ##' 
@@ -38,18 +38,24 @@ margin2.default <- function(x, margin=NULL, ...) {
   out <- marginTable(x, margin)
   out <- out[patternRepeat0(margin, dim(x), keep.order=TRUE)]
   dim(out) <- dim(x)
-  out
+  return(out)
 }
 
 ##' @method margin2 tables
 ##' @export
 margin2.tables <- function(x, margin=NULL, ...) {
+  rev <- is_rev(x)
+  if (rev) x <- reverse(x)
+
   out <- margin(x, margin)
   out <- out[patternRepeat0(c(1,margin+1), c(ntables(x), tdim(x)), keep.order=TRUE)]
   dim(out) <- dim(x)
   tdim(out) <- tdim(x)
   class(out) <- "tables"
-  out  
+  
+  if (rev) out <- reverse(out)
+  
+  return(out)
 }
 
 ##' @method conditional default
@@ -57,7 +63,7 @@ margin2.tables <- function(x, margin=NULL, ...) {
 conditional.default <- function(x, variables, condition = NULL, condition.value = NULL, undef=NaN, ...) {
   out = conditionTable(x, variables, condition, condition.value, undef=undef)
   #  if (!is.nan(undef)) out[is.nan(out)] = undef
-  out
+  return(out)
 }
 
 ##' @method conditional2 default
@@ -65,26 +71,28 @@ conditional.default <- function(x, variables, condition = NULL, condition.value 
 conditional2.default <- function(x, variables, condition = NULL, undef=NaN, ...) {
   out = conditionTable2(x, variables, condition, undef=undef)
   if (!is.nan(undef)) out[is.nan(out)] = undef
-  out
-  
+  return(out)
 }
 
 ##' Get the marginal distributions
 ##' 
-##' @param x an object of class \code{tables}
+##' @param x an object of class `tables`
 ##' @param margin integer vector giving margin to be calculated (1 for rows, etc.)
 ##' @param order logical indicating whether resulting indices
-##' should be in the same order as stated in \code{margin} 
+##' should be in the same order as stated in `margin` 
 ##' @param ... other arguments to function
 ##' 
-##' @details Calculates marginal distributions for each entry in a \code{probMat}.
+##' @details Calculates marginal distributions for each entry in a `probMat`.
 ##' 
-##' @return An object of class \code{tables} consisting of the required marginal 
+##' @return An object of class `tables` consisting of the required marginal 
 ##' distribution.
 ##' 
 ##' @method margin tables
 ##' @export
 margin.tables <- function(x, margin=NULL, order=TRUE, ...) {
+  rev <- is_rev(x)
+  if (rev) x <- reverse(x)
+  
   if (!order) margin <- sort.int(margin)
   
   out <- marginTable(as.array(x), c(1,margin+1), order=order)
@@ -92,7 +100,9 @@ margin.tables <- function(x, margin=NULL, order=TRUE, ...) {
   attr(out, "tdim") <- tdim(x)[margin]
   class(out) <- "tables"
   
-  out  
+  if (rev) out <- reverse(out)
+  
+  return(out)
 }
 
 ##' @method conditional tables
@@ -103,6 +113,9 @@ margin.tables <- function(x, margin=NULL, order=TRUE, ...) {
 ##' 
 ##' @export
 conditional.tables <- function(x, variables, condition = NULL, condition.value = NULL, force = FALSE, undef = NaN, ...) {
+  rev <- is_rev(x)
+  if (rev) x <- reverse(x)
+  
   if (!force && length(intersect(variables, attr(x, "conditional")) > 0)) stop("Attempt to keep conditional variable random")
   #if (!order) margin <- sort.int(margin)
   n <- ntables(x)
@@ -133,6 +146,8 @@ conditional.tables <- function(x, variables, condition = NULL, condition.value =
   attr(out, "conditional") <- sort.int(unique.default(c(attr(x, "conditional"), 
                                                         length(variables)+seq_along(condition))))
   
+  if (rev) out <- reverse(out)
+  
   return(out)
 }
 
@@ -140,6 +155,9 @@ conditional.tables <- function(x, variables, condition = NULL, condition.value =
 ##' @describeIn margin.tables condition and keep all variables
 ##' @export
 conditional2.tables <- function(x, variables, condition = NULL, force = FALSE, undef = NaN, ...) {
+  rev <- is_rev(x)
+  if (rev) x <- reverse(x)
+  
   if (!force && length(intersect(variables, attr(x, "conditional")) > 0)) stop("Attempt to keep conditional variable random")
   n <- ntables(x)
   if (max(variables, condition) > length(tdim(x))) stop("Not enough dimensions in table")
@@ -153,7 +171,9 @@ conditional2.tables <- function(x, variables, condition = NULL, force = FALSE, u
   attr(out, "conditional") <- sort.int(unique.default(c(attr(x, "conditional"), 
                                                         setdiff(seq_along(tdim(x)),variables))))
   
-  out    
+  if (rev) out <- reverse(out)
+  
+  return(out)
 }
 
 ##' @method intervention default
@@ -166,11 +186,16 @@ intervention.default <- function(x, variables, condition, ...) {
 ##' @describeIn margin.tables intervene on variables in distributions
 ##' @export
 intervention.tables <- function(x, variables, condition, force = FALSE, ...) {
+  rev <- is_rev(x)
+  if (rev) x <- reverse(x)
+  
   if (!force && length(intersect(variables, attr(x, "conditional")) > 0)) stop("Attempt to intervene on fixed variable")
   tmp = conditional2(x, variables, condition, undef = .5)
   x = x/c(tmp)
-  attr(out, "conditional") <- sort.int(unique.default(c(attr(x, "conditional"), variables)))
+  attr(x, "conditional") <- sort.int(unique.default(c(attr(x, "conditional"), variables)))
   
-  x
+  if (rev) x <- reverse(x)
+  
+  return(x)
 }
 

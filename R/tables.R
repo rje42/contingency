@@ -2,7 +2,7 @@
 ##' 
 ##' Take subset of tables class.
 ##' @param x object of class `tables`
-##' @param i indicies of which tables to retain
+##' @param i indices of which tables to retain
 ##' @param j which rows of each table to retain (or if `...` not specified, entries )
 ##' @param ... additional indices up to the dimension of the table
 ##' @param drop usual logical indicating whether to consolidate margins of the table (doesn't apply to `i`)
@@ -14,8 +14,9 @@
 ##' For example, `x[,1,2,2]` specifies the (1,2,2)th entry of each table; `x[,7]` will
 ##' have the same effect for 2x2x2 tables.
 ##' 
-##' If only one index is specified, then the function behaves just as ordinary subsetting
-##' on an array.
+##' If only one index is specified, then the function behaves just as ordinary 
+##' subsetting on an array, though a reversed table is modified to have its 
+##' first dimension index the tables.
 ##' 
 ##' @return A tables object over the specific entries and values selected.
 ##' 
@@ -29,7 +30,10 @@
 `[.tables` <- function(x, i, j, ..., drop=TRUE, keep=FALSE) {
   mdrop <- missing(drop); mkeep <- missing(keep)
   Nargs <- nargs() - (!mdrop) - (!mkeep)
-  
+
+  rev <- is_rev(x)
+  if (rev) x <- reverse(x)
+    
   if (Nargs <= 2) {
     ## for a single argument (i) just return that entry in the vector
     class(x) <- NULL
@@ -48,11 +52,13 @@
         tdimnames(out) <- tdimnames(x)
         class(out) <- "tables"
         attr(out, "conditional") <- attr(x, "conditional")
+        if (rev) out <- reverse(out)
       }
       return(out)
     }
     else {
-      out <- as.matrix(x)[i,j,drop=drop]
+      if (rev) out <- as.matrix(x)[j,i,drop=drop]
+      else out <- as.matrix(x)[i,j,drop=drop]
       return(out)
     }
   }
@@ -67,6 +73,13 @@
       else 1L
       dim(out) <- if (length(dim(out))) c(dim(out)[1], length(out)/dim(out)[1])
       else length(out)
+    }
+    if (rev) {
+      if (is_tables(out)) out <- reverse(out)
+      else if (!is.null(dim(out))) {
+        nd <- length(dim(out))
+        if (nd > 1) out <- aperm(out, c(seq_len(nd-1)+1, 1))
+      }
     }
     return(out)
   }
@@ -91,6 +104,9 @@ as.array.tables <- function(x, ...) {
   #       tdimnames(x) <- NULL
   #     }
   class(x) <- "array"
+  wh <- match(c("tdim", "tdimnames", "conditional"), names(attributes(x)), nomatch = 0L)
+  if (any(wh) > 0) attributes(x) <- attributes(x)[-wh]
+  
   return(x)
 }
 
@@ -112,8 +128,8 @@ as.array.tables <- function(x, ...) {
 ##' @export 
 as.matrix.tables <- function(x, ...) {
   class(x) <- "matrix"
-  attr(x, "tdim") <- NULL
-  attr(x, "tdimnames") <- NULL
+  wh <- match(c("tdim", "tdimnames", "conditional"), names(attributes(x)), nomatch = 0L)
+  if (any(wh) > 0) attributes(x) <- attributes(x)[-wh]
   return(x)
 }
 
@@ -149,6 +165,7 @@ tdim <- function(x) attr(x, "tdim")
   attr(x, "tdim") <- value
   x
 }
+
 ##' Dimension names for distributions over contingency tables
 ##' 
 ##' @param x `tables` object
@@ -178,7 +195,8 @@ tdimnames <- function(x) attr(x, "tdimnames")
 ##' @return An integer.
 ##' @export ntables
 ntables <- function(x) {
-  dim(x)[1]
+  if (is_rev(x)) dim(x)[2]
+  else dim(x)[1]
 }
 
 ##' Print tables
@@ -199,15 +217,20 @@ print.tables <- function(x, ...) {
     if (length(x) > 6) cat(", ...\n")
     return(invisible(x))
   }
-  n <- dim(x)[1L]
+  
+  rev <- is_rev(x)
+  
+  if (rev) n <- dim(x)[2L] 
+  else n <- dim(x)[1L]
   dims <- tdim(x)
   k <- length(dims)
   
   dim_str <- paste(dims, collapse="x", sep="")
-  cat("Group of ", n, " numeric tables of dimension ", dim_str, "\n", sep="")
+  cat("Group of ", n, ifelse(rev, " reversed",""), " numeric tables of dimension ", dim_str, "\n", sep="")
   
   if (n > 0) {cat("First entry:\n")
-    y <- x[1,]
+    if (rev) y <- x[,1L]
+    else y <- x[1L,]
     dim(y) <- dims
     dimnames(y) <- tdimnames(x)
     print.default(y, ...)
@@ -244,8 +267,14 @@ print.tables <- function(x, ...) {
 ##' @export
 aperm.tables <- function(a, perm, ...) {
   mdims <- dim(a)
-  dim(a) <- c(ntables(a), tdim(a))
-  out <- aperm.default(a, c(1,perm+1))
+  if (is_rev(a)) {
+    dim(a) <- c(tdim(a), ntables(a))
+    out <- aperm.default(a, c(perm,length(dim(a))))
+  }
+  else {
+    dim(a) <- c(ntables(a), tdim(a))
+    out <- aperm.default(a, c(1,perm+1))
+  }
   dim(out) <- mdims
   
   attr(out, "conditional") <- order(perm)[attr(out, "conditional")]
@@ -255,102 +284,131 @@ aperm.tables <- function(a, perm, ...) {
   out
 }
 
+##' Test object is a collection of tables
+##' 
+##' Checks if `"tables"` is in the list of class attributes.
+##' 
+##' @param x object to be tested
+##' 
+##' 
+##' @export
+is_tables <- function (x) {
+  return("tables" %in% class(x))
+}
+
 ##' As tables
 ##' 
 ##' @param x array or matrix object
 ##' @param tdim dimensions for each table
 ##' @param conditional integer vector of indices that are conditional
+##' @param rev logical: should output move through each table fastest?
 ##' @param ... other arguments for methods
+##' 
+##' @details Transforms a vector, matrix or array into a tables object with 
+##' the specified dimensions.  Note that if `rev = TRUE` then the final dimension
+##' is (by default) used to index the tables objects, and otherwise the first 
+##' dimension..
 ##' 
 ##' @return A `tables` object.
 ##' 
 ##' @export
-as_tables <- function(x, tdim, conditional, ...) {
+as_tables <- function(x, tdim, conditional, rev=FALSE, ...) {
   UseMethod("as_tables")
 }
 
 ##' @method as_tables default
 ##' @export
-as_tables.default <- function(x, tdim, conditional, ...) {
+as_tables.default <- function(x, tdim, conditional, rev=FALSE, ...) {
   class(x) <- "tables"
   if (missing(conditional)) attr(x, "conditional") <- integer(0)
   else attr(x, "conditional") <- conditional
   
   if (missing(tdim)) {
     contingency::tdim(x) <- length(x)
-    dim(x) <- c(1, length(x))
+    if (rev) dim(x) <- c(length(x), 1)
+    else dim(x) <- c(1, length(x))
   }
   else {
     contingency::tdim(x) <- tdim
     N <- length(x)/prod(tdim)
     if (N != ceiling(N)) warning("Supplied dimensions don't give a whole number of tables")
-    dim(x) <- c(ceiling(N), prod(tdim))
+    if (rev) dim(x) <- c(prod(tdim), ceiling(N))
+    else dim(x) <- c(ceiling(N), prod(tdim))
   }
   
-  
-  x
+  return(x)
 }
 
 ##' @method as_tables matrix
 ##' @export
-as_tables.matrix <- function(x, tdim, conditional,...) {
+as_tables.matrix <- function(x, tdim, conditional, rev=FALSE,...) {
   class(x) <- "tables"
   if (missing(conditional)) attr(x, "conditional") <- integer(0)
   else attr(x, "conditional") <- conditional
   
   if (missing(tdim)) {
     contingency::tdim(x) <- dim(x)
-    dim(x) <- c(1, prod(dim(x)))
+    if (rev) dim(x) <- c(prod(dim(x)), 1)
+    else dim(x) <- c(1, prod(dim(x)))
   }
   else {
     contingency::tdim(x) <- tdim
     N <- length(x)/prod(tdim)
     if (N != ceiling(N)) warning("Supplied dimensions don't give a whole number of tables")
-    dim(x) <- c(ceiling(N), prod(tdim))
+    if (rev) dim(x) <- c(prod(tdim), ceiling(N))
+    else dim(x) <- c(ceiling(N), prod(tdim))
   }
   
-  x
+  return(x)
 }
 
 ##' @method as_tables array
 ##' @export
-as_tables.array <- function(x, tdim, conditional, ...) {
+as_tables.array <- function(x, tdim, conditional, rev=FALSE, ...) {
   class(x) <- "tables"
   if (missing(conditional)) attr(x, "conditional") <- integer(0)
   else attr(x, "conditional") <- conditional
   
   if (missing(tdim)) {
     contingency::tdim(x) <- dim(x)
-    dim(x) <- c(1, prod(dim(x)))
+    if (rev) dim(x) <- c(prod(dim(x)), 1)
+    else dim(x) <- c(1, prod(dim(x)))
   }
   else {
     contingency::tdim(x) <- tdim
     N <- length(x)/prod(tdim)
     if (N != ceiling(N)) warning("Supplied dimensions don't give a whole number of tables")
-    dim(x) <- c(ceiling(N), prod(tdim))
+    if (rev) dim(x) <- c(prod(tdim), ceiling(N))
+    else dim(x) <- c(ceiling(N), prod(tdim))
   }
   
-  x
+  return(x)
 }
 
 ##' Create blank tables
 ##' 
 ##' @param n number of tables
 ##' @param tdim dimension of each table
+##' @param rev logical: should output move through each table fastest?
 ##' 
 ##' @export
-tables <- function(n, tdim) {
-  as_tables.array(array(1, dim=c(n, tdim)), tdim=tdim)
+tables <- function(n, tdim, rev=FALSE) {
+  as_tables.array(array(1, dim=c(n, tdim)), tdim=tdim, rev=rev)
 }
 
 ##' Bind tables of the same dimension
 ##' 
 ##' @param x a `tables object`
 ##' @param ... further `tables` objects with the same `tdim` attributes
+##' @param rev logical: should output move through each table fastest?
 ##' 
 ##' @export
-tbind <- function (x, ...) {
+tbind <- function (x, ..., rev=FALSE) {
   lst <- list(x, ...)
+  
+  crev <- sapply(lst, is_rev)
+  lst[crev] <- lapply(lst[crev], reverse)
+  
   dims <- sapply(lst, tdim)
   if (is.list(dims)) stop("Different numbers of dimensions")
   else if (is.matrix(dims)) {
@@ -363,8 +421,21 @@ tbind <- function (x, ...) {
   
   ## now combine objects and return
   out <- do.call(rbind, lst)
-  as_tables(out, tdim=tdim(x))
+  out <- as_tables(out, tdim=tdim(x))
+  
+  if (rev) out <- reverse(out)
+  
+  return(out)
 }
 
+reverse <- function (x) {
+  if (!is_tables(x)) stop("'reverse' only applies to 'tables' objects")
+  
+  x <- t(x)
+  if (is.null(attr(x, "rev"))) attr(x, "rev") <- TRUE
+  else attr(x, "rev") <- !attr(x, "rev")
+  
+  return(x)
+}
 
 # as.tables.data.frame <-

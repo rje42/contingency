@@ -4,7 +4,7 @@
 \alias{repTables}
 \title{Turn distributions into tables}
 \usage{
-repTables(n, f, ...)
+repTables(n, f, ..., rev = FALSE)
 }
 \arguments{
 \item{n}{number of distributions to generate}
@@ -12,6 +12,8 @@ repTables(n, f, ...)
 \item{f}{function that generates a probability distribution}
 
 \item{...}{arguments to \code{f}}
+
+\item{rev}{logical: should output move through each table fastest?}
 }
 \value{
 a tables object containing the outputs of \code{f}

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{object of class \code{tables}}
 
-\item{i}{indicies of which tables to retain}
+\item{i}{indices of which tables to retain}
 
 \item{j}{which rows of each table to retain (or if \code{...} not specified, entries )}
 

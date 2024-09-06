@@ -8,7 +8,7 @@
 \usage{
 dtab_dir(x, alpha, log = FALSE)
 
-rtab_dir(n, alpha)
+rtab_dir(n, alpha, rev = FALSE)
 }
 \arguments{
 \item{x}{\code{tables} object of observations}
@@ -16,6 +16,8 @@ rtab_dir(n, alpha)
 \item{alpha}{table containing parameters}
 
 \item{n}{number of samples}
+
+\item{rev}{logical: should output move through each table fastest?}
 }
 \description{
 Wrappers for Dirichlet distribution over a table

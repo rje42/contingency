@@ -4,11 +4,11 @@
 ##' 
 ##' @details just tests to an appropriate numerical precision that a conditional independence
 ##' holds: this is *not* a statistical test for conditional independence.
-##' If \code{A} and \code{B} overlap with \code{C} then these vertices are ignored.  If \code{A}
-##' and \code{B} intersect with one another (but not \code{C}) then the solution is always
+##' If `A` and `B` overlap with `C` then these vertices are ignored.  If `A`
+##' and `B` intersect with one another (but not `C`) then the solution is always
 ##' false.
 ##' 
-##' @param x an array or object of class \code{tables}
+##' @param x an array or object of class `tables`
 ##' @param A,B the sets of variables whose independence is to be tested
 ##' @param C conditioning set (possibly empty)
 ##' @param eps tolerance parameter
@@ -23,7 +23,7 @@ checkCI <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
   UseMethod("checkCI")
 }
 
-#' @describeIn checkCI method for \code{array} object
+#' @describeIn checkCI method for `array` object
 #' @method checkCI array
 #' @export 
 checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
@@ -44,10 +44,12 @@ checkCI.array <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
   return(TRUE)
 }
 
-#' @describeIn checkCI method for \code{tables} object
+#' @describeIn checkCI method for `tables` object
 #' @method checkCI tables
 #' @export
 checkCI.tables <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) {
+  if (is_rev(x)) x <- reverse(x)
+  
   n <- ntables(x)
   A <- setdiff(A,C)
   B <- setdiff(B,C)
@@ -77,7 +79,7 @@ checkCI.tables <- function(x, A, B, C=integer(0), eps=.Machine$double.eps, ...) 
 # ##' single conditional independence.
 # ##' 
 # ##' @param x
-# ##' @param A,B,C margins of \code{x}
+# ##' @param A,B,C margins of `x`
 # ##' 
 # ##' @details Given p(A, B, C, D) this returns p(A, C)*p(B | C)*p(D | A, B, C).
 # ##' 

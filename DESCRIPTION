@@ -1,6 +1,6 @@
 Package: contingency
 Title: Discrete Multivariate Probability Distributions
-Version: 0.0.11
+Version: 0.1.0
 Authors@R: person("Robin", "Evans", email = "evans@stats.ox.ac.uk",
                   role = c("aut", "cre"))
 Description: Provides an object class for dealing with many multivariate

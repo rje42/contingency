@@ -1,4 +1,4 @@
-##' Permute indices for variable \code{k}
+##' Permute indices for variable `k`
 ##' 
 ##' Currently only works for binary dimensions.
 ##' 
@@ -8,10 +8,10 @@
 ##' @param ... other arguments (not currently used)
 ##' 
 ##' @details Permutes the levels of one variable 
-##' according to the permutation given in \code{perm}.
+##' according to the permutation given in `perm`.
 ##' Can be applied to matrices, arrays or tables.
 ##' 
-##' @return A permuted \code{array} or \code{tables} object.
+##' @return A permuted `array` or `tables` object.
 ##' 
 ##' @export 
 perm_dim <- function(x, k, perm, ...) {
@@ -35,7 +35,7 @@ perm_dim.default <- function(x, k, perm, ...) {
     subtable(y,k,i) <- subtable(x,k,perm[i])
   }
 
-  y
+  return(y)
 }
 
 ##' @export
@@ -47,9 +47,9 @@ perm_dim.tables <- function(x, k, perm, ...) {
 
   ## call default method to perform permutation  
   out <- perm_dim.default(x=as.array.tables(x), k=k+1, perm=perm)
-  out <- as_tables(out)
-  dim(out) <- dim(x)
-  tdim(out) <- tdim(x)
+  out <- as_tables(out, tdim=tdim(x), rev=is_rev(x))
+  # dim(out) <- dim(x)
+  # tdim(out) <- tdim(x)
   
-  out
+  return(out)
 }

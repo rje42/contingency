@@ -4,7 +4,7 @@
 \alias{as_tables}
 \title{As tables}
 \usage{
-as_tables(x, tdim, conditional, ...)
+as_tables(x, tdim, conditional, rev = FALSE, ...)
 }
 \arguments{
 \item{x}{array or matrix object}
@@ -13,6 +13,8 @@ as_tables(x, tdim, conditional, ...)
 
 \item{conditional}{integer vector of indices that are conditional}
 
+\item{rev}{logical: should output move through each table fastest?}
+
 \item{...}{other arguments for methods}
 }
 \value{
@@ -20,4 +22,10 @@ A \code{tables} object.
 }
 \description{
 As tables
+}
+\details{
+Transforms a vector, matrix or array into a tables object with
+the specified dimensions.  Note that if \code{rev = TRUE} then the final dimension
+is (by default) used to index the tables objects, and otherwise the first
+dimension..
 }

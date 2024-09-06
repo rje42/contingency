@@ -5,9 +5,9 @@
 \alias{rcondProbMat}
 \title{Generate matrix of (conditional) probability distributions}
 \usage{
-rprobMat(n, dim, d, alpha = 1)
+rprobMat(n, dim, d, alpha = 1, rev = FALSE)
 
-rcondProbMat(n, dim, d, alpha = 1, condition)
+rcondProbMat(n, dim, d, alpha = 1, condition, rev = FALSE)
 }
 \arguments{
 \item{n}{number of distributions}

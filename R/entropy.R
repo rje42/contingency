@@ -27,7 +27,7 @@ entropy.array <- function(p, margin, ...) {
   -sum(q*log(q))/sum(q)
 }
 
-##' @describeIn entropy Method for \code{tables} object
+##' @describeIn entropy Method for `tables` object
 ##' @param margin margin to consider
 ##' @method entropy tables
 ##' @export
@@ -35,12 +35,13 @@ entropy.tables <- function(p, margin, ...) {
   if (!missing(margin)) p <- margin.tables(p, margin)
   tmp <- p*log(p)
   tmp[is.nan(tmp)] <- 0
-  -rowSums(tmp)/rowSums(p)
+  if (is_rev(p)) -colSums(tmp)/colSums(p)
+  else -rowSums(tmp)/rowSums(p)
 }
 
 ##' (Conditional) mutual information
 ##' 
-##' @param p numeric array or \code{tables} class
+##' @param p numeric array or `tables` class
 ##' @param m1,m2 margins for mutual information
 ##' @param condition conditional margin
 ##' @param ... other arguments to methods
@@ -74,13 +75,17 @@ mutualInf.default <- function(p, m1, m2, condition, ...) {
   return(sum(out[tmp > 0]))
 }
 
-##' @describeIn mutualInf Method for \code{tables} object
+##' @describeIn mutualInf Method for `tables` object
 ##' @method mutualInf tables
 ##' @export
 mutualInf.tables <- function(p, m1, m2, condition, ...) {
+  
+  if (is_rev(p)) p <- reverse(p)
+  
   if (missing(condition)) condition <- integer(0)
-  if (length(intersect(m1,m2)) > 0 || length(intersect(c(m1,m2),condition))) stop("Variable sets must be disjoint")
-  else tmp <- margin(p, c(m1, m2, condition))
+  if (length(intersect(m1,m2)) > 0 || length(intersect(c(m1,m2),condition)) > 0) stop("Variable sets must be disjoint")
+  
+  tmp <- margin(p, c(m1, m2, condition))
   tmp <- tmp/rowSums(tmp)
   
   ds <- tdim(tmp)
@@ -147,11 +152,13 @@ kl.default <- function(x, y, ...) {
   sum(x[y > 0]*log(x[y > 0]/y[y > 0]))
 }
 
-##' @describeIn kl Method for \code{tables} object
+##' @describeIn kl Method for `tables` object
 ##' @method kl tables
 ##' @export 
 kl.tables <- function(x, y, ...) {
   
+  if (is_rev(x)) x <- reverse(x)
+  if (is_rev(y)) y <- reverse(y)
   if (!("tables" %in% class(y))) y <- as_tables(y, tdim=tdim(x)) 
   
   if ((length(tdim(x)) != length(tdim(y))) || 
@@ -210,10 +217,11 @@ multiInf.default <- function(x, margin=NULL, ...) {
   entropy(x/out)
 }
 
-##' @describeIn multiInf Method for \code{tables} object
+##' @describeIn multiInf Method for `tables` object
 ##' @method multiInf tables
 ##' @export 
 multiInf.tables <- function(x, margin=NULL, ...) {
+  if (is_rev(x)) x <- reverse(x)
   
   if (!is.null(margin)) x <- margin(x, margin)
   

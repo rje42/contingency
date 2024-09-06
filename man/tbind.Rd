@@ -4,12 +4,14 @@
 \alias{tbind}
 \title{Bind tables of the same dimension}
 \usage{
-tbind(x, ...)
+tbind(x, ..., rev = FALSE)
 }
 \arguments{
 \item{x}{a \verb{tables object}}
 
 \item{...}{further \code{tables} objects with the same \code{tdim} attributes}
+
+\item{rev}{logical: should output move through each table fastest?}
 }
 \description{
 Bind tables of the same dimension

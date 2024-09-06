@@ -4,12 +4,14 @@
 \alias{tables}
 \title{Create blank tables}
 \usage{
-tables(n, tdim)
+tables(n, tdim, rev = FALSE)
 }
 \arguments{
 \item{n}{number of tables}
 
 \item{tdim}{dimension of each table}
+
+\item{rev}{logical: should output move through each table fastest?}
 }
 \description{
 Create blank tables

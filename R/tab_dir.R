@@ -3,6 +3,7 @@
 ##' @param x `tables` object of observations
 ##' @param n number of samples
 ##' @param alpha table containing parameters
+##' @param rev logical: should output move through each table fastest?
 ##' 
 ##' @details
 ##' This function obtains the Dirichlet density over a contingency table 
@@ -24,9 +25,9 @@ dtab_dir <- function (x, alpha, log = FALSE) {
 
 ##' @describeIn tab_dir sampling function
 ##' @export
-rtab_dir <- function (n, alpha) {
+rtab_dir <- function (n, alpha, rev=FALSE) {
   x <- rdirichlet(n, c(alpha))
-  x <- as_tables(x, tdim=dim(alpha))
+  x <- as_tables(x, tdim=dim(alpha), rev=rev)
   
   return(x)
 }
